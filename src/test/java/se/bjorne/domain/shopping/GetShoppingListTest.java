@@ -31,8 +31,21 @@ public class GetShoppingListTest {
         }
     }
 
+    @Test
+    public void printGetAllItems() throws Exception {
+        List<Item> items = getAllItems();
+        for (Item item : items) {
+            System.out.println(item);
+        }
+    }
+
     private List<ShoppingList> getAllShoppingLists() {
         Query query = manager.createQuery("SELECT shoplist FROM ShoppingList shoplist", ShoppingList.class);
+        return query .getResultList();
+    }
+
+    private List<Item> getAllItems() {
+        Query query = manager.createQuery("SELECT anItem FROM Item anItem", Item.class);
         return query .getResultList();
     }
 
