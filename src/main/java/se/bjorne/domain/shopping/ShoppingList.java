@@ -11,7 +11,7 @@ public class ShoppingList {
 	private Long id;
 	private String name;
 
-	@OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Item> items = new ArrayList<>();
 
 	public ShoppingList() {
@@ -53,9 +53,9 @@ public class ShoppingList {
 		buffer.append("ShoppingList{" +
 				"id=" + id +
 				", name='" + name);
-
+        buffer.append("\nNr of items: " + getItems().size());
 		for (Item item : getItems()) {
-			buffer.append("[(" + item.getName() + "):");
+			buffer.append("\n[(" + item.getName() + "):");
 			buffer.append(item);
 			buffer.append("]");
 		}

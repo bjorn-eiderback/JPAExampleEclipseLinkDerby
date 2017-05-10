@@ -60,8 +60,103 @@ public class ShoppingListTest {
         tx.commit();
         List<ShoppingList> shoppingLists = getAllShoppingLists();
         assertEquals(1L, shoppingLists.size());
-        assertEquals(1L, (shoppingLists.get(0)).getItems().size());
+        assertEquals(1L, shoppingLists.get(0).getItems().size());
+    }
 
+    @Test
+    public void testAddingSeveralItem() throws Exception {
+        ShoppingList shoppingList = new ShoppingList("Lista 2");
+        addSomeItemsToShoppingList(shoppingList);
+        EntityTransaction tx = manager.getTransaction();
+        tx.begin();
+        try {
+            manager.persist(shoppingList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tx.commit();
+        List<ShoppingList> shoppingLists = getAllShoppingLists();
+        assertEquals(1L, shoppingLists.size());
+        assertEquals(5L, shoppingLists.get(0).getItems().size());
+    }
+
+    @Test
+    public void testFinding() throws Exception {
+        ShoppingList shoppingList = new ShoppingList("Lista 2");
+        addSomeItemsToShoppingList(shoppingList);
+        EntityTransaction tx = manager.getTransaction();
+        tx.begin();
+        try {
+            manager.persist(shoppingList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tx.commit();
+        List<ShoppingList> shoppingLists = getAllShoppingLists();
+        assertEquals(1L, shoppingLists.size());
+        Long id = shoppingLists.get(0).getId();
+        ShoppingList found = manager.find(ShoppingList.class, id);
+        assertEquals(id, found.getId());
+    }
+
+    @Test
+    public void testRemovingItem() throws Exception {
+        ShoppingList shoppingList = new ShoppingList("Lista 2");
+        addSomeItemsToShoppingList(shoppingList);
+        EntityTransaction tx = manager.getTransaction();
+        tx.begin();
+        try {
+            manager.persist(shoppingList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tx.commit();
+        EntityTransaction tx2 = manager.getTransaction();
+        List<ShoppingList> shoppingLists = getAllShoppingLists();
+        ShoppingList shopList = shoppingLists.get(0);
+        Item item = shopList.getItems().remove(0);
+        tx2.begin();
+        try {
+            //Variant 1: manager.remove(item);
+            manager.merge(shopList);//Variant 2: men då behöver vi annotera items med orphanRemoval = true i ShoppingList
+                    //Fast orphanRemoval anses samtidigt lite tveksamt
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tx2.commit();
+        List<ShoppingList> shoppingListsAgain = getAllShoppingLists();
+        assertEquals(4L, shoppingListsAgain.get(0).getItems().size());
+    }
+
+    @Test
+    public void testRemovingShoppingList() throws Exception {
+        ShoppingList shoppingList = new ShoppingList("Lista 3");
+        shoppingList.getItems().add(new Item("item 3.1", shoppingList));
+        EntityTransaction tx = manager.getTransaction();
+        tx.begin();
+        try {
+            manager.persist(shoppingList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tx.commit();
+        EntityTransaction tx2 = manager.getTransaction();
+        tx2.begin();
+        try {
+            manager.remove(shoppingList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tx2.commit();
+        List<ShoppingList> shoppingLists = getAllShoppingLists();
+        assertTrue(shoppingLists.isEmpty());
+    }
+
+    private void addSomeItemsToShoppingList(ShoppingList shoppingList) {
+        List<Item> items = shoppingList.getItems();
+        for(int i = 1; i <= 5; i++) {
+            items.add(new Item("item " + i, shoppingList));
+        }
     }
 
     private List<ShoppingList> getAllShoppingLists() {
