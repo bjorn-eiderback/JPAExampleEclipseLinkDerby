@@ -67,3 +67,6 @@ hs_err_pid*
 _DS_STORE
 
 .idea/
+
+simpleDb
+derby.log

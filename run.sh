@@ -1,1 +1,1 @@
-mvn compile exec:java -Dexec.mainClass=com.mastertheboss.jpa.JpaTest
+mvn compile exec:java -Dexec.mainClass=se.bjorne.jpa.VeryUgglyTest
