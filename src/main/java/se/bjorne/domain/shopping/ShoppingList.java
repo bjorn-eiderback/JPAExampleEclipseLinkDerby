@@ -46,12 +46,20 @@ public class ShoppingList {
 		this.items = items;
 	}
 
+	//En toString på delarna (items) triggar inte uppläsning. Så vi får göra det lite mer komplicerat...
 	@Override
 	public String toString() {
-		return "ShoppingList{" +
+		StringBuffer buffer = new StringBuffer("");
+		buffer.append("ShoppingList{" +
 				"id=" + id +
-				", name='" + name + '\'' +
-				", items=" + items +
-				'}';
+				", name='" + name);
+
+		for (Item item : getItems()) {
+			buffer.append("[(" + item.getName() + "):");
+			buffer.append(item);
+			buffer.append("]");
+		}
+		buffer.append("}");
+		return buffer.toString();
 	}
 }

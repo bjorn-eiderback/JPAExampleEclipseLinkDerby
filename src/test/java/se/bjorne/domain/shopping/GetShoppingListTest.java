@@ -3,12 +3,12 @@ package se.bjorne.domain.shopping;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.io.IOException;
 import java.util.List;
-
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
 
 
 /**

@@ -46,6 +46,24 @@ public class ShoppingListTest {
         assertEquals(1L, shoppingLists.size());
     }
 
+    @Test
+    public void testAddingAnItem() throws Exception {
+        ShoppingList shoppingList = new ShoppingList("Lista 2");
+        shoppingList.getItems().add(new Item("item 1", shoppingList));
+        EntityTransaction tx = manager.getTransaction();
+        tx.begin();
+        try {
+            manager.persist(shoppingList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tx.commit();
+        List<ShoppingList> shoppingLists = getAllShoppingLists();
+        assertEquals(1L, shoppingLists.size());
+        assertEquals(1L, (shoppingLists.get(0)).getItems().size());
+
+    }
+
     private List<ShoppingList> getAllShoppingLists() {
         Query query = manager.createQuery("SELECT shoplist FROM ShoppingList shoplist", ShoppingList.class);
         return query .getResultList();
