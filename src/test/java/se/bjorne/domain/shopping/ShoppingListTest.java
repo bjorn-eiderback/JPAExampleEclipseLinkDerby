@@ -161,7 +161,7 @@ public class ShoppingListTest {
 
     private List<ShoppingList> getAllShoppingLists() {
         Query query = manager.createQuery("SELECT shoplist FROM ShoppingList shoplist", ShoppingList.class);
-        return query .getResultList();
+        return query.getResultList();
     }
 
     private void clear() {

@@ -98,14 +98,14 @@ public class VeryUgglyTest {
     }
 
     private void createEmployees() {
-        int numOfEmployees = manager.createQuery("Select a From Employee a", Employee.class).getResultList().size();
-        if (numOfEmployees == 0) {
+        //int numOfEmployees = manager.createQuery("Select a From Employee a", Employee.class).getResultList().size();
+        //if (numOfEmployees == 0) {
             Department department = new Department("java");
             department.getEmployees().add(new Employee("Kalle Kula", department));
             department.getEmployees().add(new Employee("Nisse Kula", department));
             department.getEmployees().add(new Employee("Anna Kula", department));
             manager.persist(department);
-        }
+        //}
     }
 
     private void createShoppinglist() {
